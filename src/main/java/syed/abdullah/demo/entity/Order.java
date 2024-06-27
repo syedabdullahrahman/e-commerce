@@ -58,7 +58,7 @@ public class Order implements Serializable {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "customerNumber", nullable = false)
-    private Customer customerNumber;
+    private Customer customer;
 
     @OneToMany(mappedBy = "order")
     private Set<Orderdetail> orderdetails = new LinkedHashSet<>();

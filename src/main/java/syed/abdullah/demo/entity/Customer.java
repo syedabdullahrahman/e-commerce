@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import syed.abdullah.demo.Wishlist;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -95,10 +96,12 @@ public class Customer implements Serializable {
     @Column(name = COLUMN_CREDITLIMIT_NAME, precision = 10, scale = 2)
     private BigDecimal creditLimit;
 
-    @OneToMany(mappedBy = "customerNumber")
+    @OneToMany(mappedBy = "customer")
     private Set<Order> orders = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "customer")
     private Set<Payment> payments = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "customer")
+    private Set<Wishlist> wishlists = new LinkedHashSet<>();
 }

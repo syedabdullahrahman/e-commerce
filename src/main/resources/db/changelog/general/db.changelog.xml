@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.16.xsd">
+
+    <changeSet author="abdullah" id="2024_06_27_create_schema.sql">
+        <sqlFile path="2024_06_27_create_schema.sql" relativeToChangelogFile="true" splitStatements="true"/>
+    </changeSet>
+
+    <changeSet author="abdullah" id="2024_06_27_insert_data.sql">
+        <sqlFile path="2024_06_27_insert_data.sql" relativeToChangelogFile="true" splitStatements="true"/>
+    </changeSet>
+
+</databaseChangeLog>

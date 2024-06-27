@@ -46,10 +46,10 @@ public class Order implements Serializable {
     @Column(name = COLUMN_SHIPPEDDATE_NAME)
     private LocalDate shippedDate;
 
-    @Size(max = 15)
     @NotNull
-    @Column(name = COLUMN_STATUS_NAME, nullable = false, length = 15)
-    private String status;
+    @Column(name = COLUMN_STATUS_NAME, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @Lob
     @Column(name = COLUMN_COMMENTS_NAME)
@@ -60,7 +60,7 @@ public class Order implements Serializable {
     @JoinColumn(name = "customerNumber", nullable = false)
     private Customer customer;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "orderNumber")
     private Set<Orderdetail> orderdetails = new LinkedHashSet<>();
 
 }

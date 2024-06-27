@@ -50,9 +50,4 @@ public class Orderdetail implements Serializable {
     @Column(name = COLUMN_ORDERLINENUMBER_NAME, nullable = false)
     private Short orderLineNumber;
 
-    @ManyToOne
-    private Order order;
-
-    @ManyToOne
-    private Product product;
 }

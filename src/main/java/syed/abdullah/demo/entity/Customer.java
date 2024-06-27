@@ -99,7 +99,7 @@ public class Customer implements Serializable {
     @OneToMany(mappedBy = "customer")
     private Set<Order> orders = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customerNumber")
     private Set<Payment> payments = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "customer")

@@ -22,7 +22,6 @@ public class Payment implements Serializable {
     public static final String COLUMN_AMOUNT_NAME = "amount";
     private static final long serialVersionUID = 7797160986810858836L;
 
-
     @EmbeddedId
     private PaymentId id;
 
@@ -38,7 +37,4 @@ public class Payment implements Serializable {
     @NotNull
     @Column(name = COLUMN_AMOUNT_NAME, nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
-
-    @ManyToOne
-    private Customer customer;
 }

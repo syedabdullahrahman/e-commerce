@@ -75,7 +75,7 @@ public class Product implements Serializable {
     @Column(name = COLUMN_MSRP_NAME, nullable = false, precision = 10, scale = 2)
     private BigDecimal msrp;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "productCode")
     private Set<Orderdetail> orderdetails = new LinkedHashSet<>();
 
 }

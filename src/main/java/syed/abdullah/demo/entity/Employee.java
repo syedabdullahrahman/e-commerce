@@ -69,8 +69,8 @@ public class Employee implements Serializable {
     @Column(name = COLUMN_JOBTITLE_NAME, nullable = false, length = 50)
     private String jobTitle;
 
-    @OneToMany(mappedBy = "salesRepEmployeeNumber")
-    private Set<Customer> customers = new LinkedHashSet<>();
+//    @OneToMany(mappedBy = "salesRepEmployeeNumber")
+//    private Set<Customer> customers = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "reportsTo")
     private Set<Employee> employees = new LinkedHashSet<>();

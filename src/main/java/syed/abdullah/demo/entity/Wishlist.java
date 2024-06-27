@@ -1,5 +1,6 @@
-package syed.abdullah.demo;
+package syed.abdullah.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import syed.abdullah.demo.entity.Customer;
@@ -26,12 +27,12 @@ public class Wishlist implements Serializable {
     private WishlistId id;
 
     @MapsId("customerNumber")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "customerNumber", nullable = false)
     private Customer customer;
 
     @MapsId("productCode")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "productCode", nullable = false)
     private Product productCode;
 

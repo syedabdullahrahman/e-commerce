@@ -44,7 +44,7 @@ public class Product implements Serializable {
     private String productName;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "productLine", nullable = false)
     private Productline productLine;
 
@@ -75,7 +75,7 @@ public class Product implements Serializable {
     @Column(name = COLUMN_MSRP_NAME, nullable = false, precision = 10, scale = 2)
     private BigDecimal msrp;
 
-    @OneToMany(mappedBy = "productCode")
-    private Set<Orderdetail> orderdetails = new LinkedHashSet<>();
+//    @OneToMany(mappedBy = "productCode")
+//    private Set<Orderdetail> orderdetails = new LinkedHashSet<>();
 
 }

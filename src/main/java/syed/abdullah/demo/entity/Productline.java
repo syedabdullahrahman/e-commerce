@@ -1,5 +1,6 @@
 package syed.abdullah.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -42,6 +43,7 @@ public class Productline implements Serializable {
     private byte[] image;
 
     @OneToMany(mappedBy = "productLine")
+    @JsonIgnore
     private Set<Product> products = new LinkedHashSet<>();
 
 }

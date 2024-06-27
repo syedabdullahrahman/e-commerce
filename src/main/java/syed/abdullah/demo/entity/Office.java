@@ -1,5 +1,6 @@
 package syed.abdullah.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -75,6 +76,7 @@ public class Office implements Serializable {
     private String territory;
 
     @OneToMany(mappedBy = "officeCode")
+    @JsonIgnore
     private Set<Employee> employees = new LinkedHashSet<>();
 
 }

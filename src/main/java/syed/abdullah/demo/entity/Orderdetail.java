@@ -1,5 +1,6 @@
 package syed.abdullah.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -31,6 +32,7 @@ public class Orderdetail implements Serializable {
     @MapsId("orderNumber")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "orderNumber", nullable = false)
+    @JsonIgnore
     private Order orderNumber;
 
     @MapsId("productCode")

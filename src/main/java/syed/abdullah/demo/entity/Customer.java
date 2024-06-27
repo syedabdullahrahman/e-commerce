@@ -1,10 +1,10 @@
 package syed.abdullah.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import syed.abdullah.demo.Wishlist;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -89,19 +89,22 @@ public class Customer implements Serializable {
     @Column(name = COLUMN_COUNTRY_NAME, nullable = false, length = 50)
     private String country;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "salesRepEmployeeNumber")
-    private Employee salesRepEmployeeNumber;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "salesRepEmployeeNumber")
+//    private Employee salesRepEmployeeNumber;
 
     @Column(name = COLUMN_CREDITLIMIT_NAME, precision = 10, scale = 2)
     private BigDecimal creditLimit;
 
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     private Set<Order> orders = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "customerNumber")
+    @JsonIgnore
     private Set<Payment> payments = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     private Set<Wishlist> wishlists = new LinkedHashSet<>();
 }

@@ -9,6 +9,7 @@ import syed.abdullah.demo.service.EcommerceService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -20,7 +21,7 @@ public class EcommerceController {
     }
 
     @GetMapping("/wishlist/{customerId}")
-    public List<Wishlist> getWishlist(@PathVariable Integer customerId) {
+    public Set<Wishlist> getWishlist(@PathVariable Integer customerId) {
         return ecommerceService.getWishlistByCustomerId(customerId);
     }
 }

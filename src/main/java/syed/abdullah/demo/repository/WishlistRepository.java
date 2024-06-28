@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 import syed.abdullah.demo.entity.Wishlist;
 import syed.abdullah.demo.entity.WishlistId;
 
-import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface WishlistRepository extends JpaRepository<Wishlist, WishlistId>, JpaSpecificationExecutor<Wishlist> {
-    List<Wishlist> findAllByCustomerId(Integer id);
+    Set<Wishlist> findDistinctByCustomerId(Integer customerId);
 }

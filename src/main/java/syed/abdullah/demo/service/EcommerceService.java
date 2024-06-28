@@ -1,26 +1,37 @@
 package syed.abdullah.demo.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import syed.abdullah.demo.entity.Customer;
 import syed.abdullah.demo.entity.Wishlist;
+import syed.abdullah.demo.repository.CustomerRepository;
 import syed.abdullah.demo.repository.WishlistRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional(readOnly = true)
 public class EcommerceService {
     private WishlistRepository wishlistRepository;
+    private CustomerRepository customerRepository;
 
-    public EcommerceService(WishlistRepository wishlistRepository) {
+    public EcommerceService(WishlistRepository wishlistRepository, CustomerRepository customerRepository) {
         this.wishlistRepository = wishlistRepository;
+        this.customerRepository = customerRepository;
     }
-
-    public List<Wishlist> getWishlistByCustomerId(Integer customerId) {
-        return wishlistRepository.findAllByCustomerId(customerId);
+    public Set<Wishlist> getWishlistByCustomerId(Integer customerId) {
+        Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
+        if (optionalCustomer.isPresent()) {
+            Customer customer = optionalCustomer.get();
+            return customer.getWishlists();
+        } else {
+            throw new EntityNotFoundException("Customer not found by ID: " + customerId);
+        }
     }
-
 }
 

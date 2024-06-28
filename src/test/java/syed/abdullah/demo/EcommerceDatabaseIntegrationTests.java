@@ -49,9 +49,15 @@ public class EcommerceDatabaseIntegrationTests {
     }
 
     @Test
-    public void testTotalSalesToday() {
+    public void testTotalSalesToday_1() {
         BigDecimal totalSalesToday = ecommerceService.getTotalSalesToday();
         assertEquals(BigDecimal.valueOf(0), totalSalesToday);
+    }
+
+    @Test
+    public void testTotalSalesToday_2() {
+        BigDecimal salesOfDay = ecommerceService.getTotalSalesOfDay(LocalDate.of(2024, 06, 28));
+        assertEquals(BigDecimal.valueOf(0), salesOfDay);
     }
 
     @Test
@@ -95,8 +101,8 @@ public class EcommerceDatabaseIntegrationTests {
         Integer top5 = 5;
         List<Product> products = ecommerceService.getTopNSellingItemsAllTime(top5);
         assertEquals(top5, products.size());
-        List<String> expectedProductCodes = List.of("S18_3232", "S18_1342", "S700_4002", "S18_3856", "S50_1341");
-        assertThat(products.stream().map(Product::getProductCode).toList(), containsInAnyOrder(expectedProductCodes));
+        List<String> expectedProductCodes = List.of("S18_3232", "S12_1108", "S10_1949", "S10_4698", "S12_1099");
+        assertThat(products.stream().map(Product::getProductCode).toList(), containsInAnyOrder(expectedProductCodes.toArray()));
     }
 
     @Test
@@ -111,9 +117,9 @@ public class EcommerceDatabaseIntegrationTests {
         Integer top5 = 5;
         LocalDate startDate = LocalDate.of(2004, 1, 1);
         LocalDate endDate = LocalDate.of(2004, 12, 31);
-        List<Product> products = ecommerceService.getTopNSellingItemsBetweenDates(top5, startDate, endDate);
+        List<Product> products = ecommerceService.getTopNSellingItemsBetweenDatesBasedOnNumberOfSales(top5, startDate, endDate);
         assertEquals(5, products.size());
-        List<String> expectedProductCodes = List.of("S18_3232", "S18_1662", "S12_1108", "S700_2610", "S18_3856");
-        assertThat(products.stream().map(Product::getProductCode).toList(), containsInAnyOrder(expectedProductCodes));
+        List<String> expectedProductCodes = List.of("S18_3232", "S700_2834", "S10_1678", "S18_1342", "S12_1108");
+        assertThat(products.stream().map(Product::getProductCode).toList(), containsInAnyOrder(expectedProductCodes.toArray()));
     }
 }

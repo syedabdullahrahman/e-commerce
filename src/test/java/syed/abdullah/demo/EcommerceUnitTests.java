@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import syed.abdullah.demo.entity.Customer;
 import syed.abdullah.demo.entity.Wishlist;
 import syed.abdullah.demo.repository.CustomerRepository;
@@ -18,14 +19,12 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 public class EcommerceUnitTests {
-
-    @Mock
-    private WishlistRepository wishlistRepository;
     @Mock
     private CustomerRepository customerRepository;
 

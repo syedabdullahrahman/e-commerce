@@ -6,11 +6,16 @@ import org.springframework.transaction.annotation.Transactional;
 import syed.abdullah.demo.entity.Customer;
 import syed.abdullah.demo.entity.Product;
 import syed.abdullah.demo.entity.Wishlist;
+import syed.abdullah.demo.exception.DataNotFoundException;
 import syed.abdullah.demo.repository.CustomerRepository;
+import syed.abdullah.demo.repository.OrderRepository;
+import syed.abdullah.demo.repository.ProductRepository;
 import syed.abdullah.demo.repository.WishlistRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -19,10 +24,14 @@ import java.util.Set;
 @Transactional(readOnly = true)
 public class EcommerceService {
     private final WishlistRepository wishlistRepository;
+    private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
 
-    public EcommerceService(WishlistRepository wishlistRepository, CustomerRepository customerRepository) {
+    public EcommerceService(WishlistRepository wishlistRepository, ProductRepository productRepository, OrderRepository orderRepository, CustomerRepository customerRepository) {
         this.wishlistRepository = wishlistRepository;
+        this.productRepository = productRepository;
+        this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
     }
 
@@ -37,27 +46,60 @@ public class EcommerceService {
     }
 
     public BigDecimal getTotalSalesToday() {
-        return BigDecimal.TEN;
+        return getTotalSalesOfDay(LocalDate.now());
     }
 
     public BigDecimal getTotalSalesOfDay(LocalDate date) {
-        return BigDecimal.TEN;
+        return orderRepository.getTotalSalesOfDay(date).orElse(BigDecimal.ZERO);
     }
 
     public LocalDate getMaxSaleDay(LocalDate startDate, LocalDate endDate) {
-        return LocalDate.now();
+        Optional<LocalDate> maxSaleDayBetweenDates = orderRepository.getMaxSaleDayBetweenDates(startDate, endDate);
+        if(maxSaleDayBetweenDates.isPresent()){
+            return maxSaleDayBetweenDates.get();
+        } else {
+            throw new DataNotFoundException(String.format("No date found between %s and %s",startDate,endDate));
+        }
     }
 
+    /**
+     * Return top N selling items of all time (based on total sale amount).
+     * @param number
+     * @return
+     */
     public List<Product> getTopNSellingItemsAllTime(Integer number) {
-        return List.of();
+        return getTopNSellingItemsBetweenDatesBasedOnTotalSaleAmount(number, LocalDate.MIN, LocalDate.now());
     }
+
+    /**
+     * return top N selling items of the last month (based on number of sales).
+     * @param number
+     * @return
+     */
 
     public List<Product> getTopNSellingItemsLastMonth(Integer number) {
-        return List.of();
+        LastMonth lastMonth = getLastMonth();
+        return getTopNSellingItemsBetweenDatesBasedOnNumberOfSales(number, lastMonth.startDate, lastMonth.endDate);
+    }
+    record LastMonth(LocalDate startDate, LocalDate endDate){}
+    private LastMonth getLastMonth() {
+        LocalDate date = LocalDate.now();
+        int year = date.getYear();
+        int month = date.getMonthValue();
+        LocalDate firstDayOfMonth = LocalDate.of(year, month, 1);
+        YearMonth yearMonth = YearMonth.from(date);
+        LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
+        return new LastMonth(firstDayOfMonth, lastDayOfMonth);
     }
 
-    public List<Product> getTopNSellingItemsBetweenDates(Integer number, LocalDate startDate, LocalDate endDate) {
-        return List.of();
+    public List<Product> getTopNSellingItemsBetweenDatesBasedOnNumberOfSales(Integer number, LocalDate startDate, LocalDate endDate) {
+        List<Product> basedOnNumberOfSales = productRepository.getTopNProductsBetweenDatesBasedOnNumberOfSales(number, startDate, endDate);
+        return basedOnNumberOfSales;
+    }
+
+    public List<Product> getTopNSellingItemsBetweenDatesBasedOnTotalSaleAmount(Integer number, LocalDate startDate, LocalDate endDate) {
+        List<Product> basedOnTotalSaleAmount = productRepository.getTopNProductsBetweenDatesBasedOnTotalSaleAmount(number, startDate, endDate);
+        return basedOnTotalSaleAmount;
     }
 }
 

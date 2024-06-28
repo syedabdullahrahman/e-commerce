@@ -39,6 +39,10 @@ public class EcommerceService {
         return BigDecimal.TEN;
     }
 
+    public BigDecimal getTotalSalesOfDay(LocalDate date) {
+        return BigDecimal.TEN;
+    }
+
     public LocalDate getMaxSaleDay(LocalDate startDate, LocalDate endDate) {
         return LocalDate.now();
     }

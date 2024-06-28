@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  app:
+    container_name: ecommerce-backend
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DB_NAME: ecommerce
+      DB_USER: user
+      DB_USER_PASSWORD: password
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ecommerce?createDatabaseIfNotExist=true&sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_SQL_INIT_MODE : never
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: false
+
+  db:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: ecommerce
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"

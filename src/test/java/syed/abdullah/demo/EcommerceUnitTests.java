@@ -6,24 +6,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 import syed.abdullah.demo.entity.Customer;
 import syed.abdullah.demo.entity.Wishlist;
 import syed.abdullah.demo.repository.CustomerRepository;
-import syed.abdullah.demo.repository.WishlistRepository;
 import syed.abdullah.demo.service.EcommerceService;
 
 import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
-@ActiveProfiles("test")
 public class EcommerceUnitTests {
     @Mock
     private CustomerRepository customerRepository;
@@ -33,9 +26,10 @@ public class EcommerceUnitTests {
 
     @Test
     public void testGetWishlistByCustomerId() {
-        Customer customerEmptyWishList = Customer.builder().wishlists(Set.of()).build();
-        Mockito.when(customerRepository.findById(103)).thenReturn(Optional.ofNullable(customerEmptyWishList));
-        Set<Wishlist> wishlist = ecommerceService.getWishlistByCustomerId(103);
+        Integer customerId = 103;
+        Customer customerEmptyWishList = Customer.builder().id(customerId).wishlists(Set.of()).build();
+        Mockito.when(customerRepository.findById(customerId)).thenReturn(Optional.ofNullable(customerEmptyWishList));
+        Set<Wishlist> wishlist = ecommerceService.getWishlistByCustomerId(customerId);
         assertEquals(0, wishlist.size());
     }
 

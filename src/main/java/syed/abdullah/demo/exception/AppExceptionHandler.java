@@ -13,11 +13,12 @@ import java.util.Date;
 @ControllerAdvice
 @Slf4j
 public class AppExceptionHandler {
-    @ExceptionHandler({EntityNotFoundException.class,DataNotFoundException.class})
+    @ExceptionHandler({EntityNotFoundException.class, DataNotFoundException.class})
     public ResponseEntity<?> globalEntityNotFoundExceptionHandling(Exception exception, WebRequest request) {
         log.error(exception.getMessage(), exception);
         return new ResponseEntity<>(new ErrorDetails(new Date(), exception.getMessage(), request.getDescription(false)), HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> globalExceptionHandling(Exception exception, WebRequest request) {
         log.error(exception.getMessage(), exception);

@@ -14,10 +14,6 @@ public enum OrderStatus {
         this.status = status;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
     // Optional: Create a static method to convert from String to enum
     public static OrderStatus fromString(String text) {
         for (OrderStatus status : OrderStatus.values()) {
@@ -26,6 +22,10 @@ public enum OrderStatus {
             }
         }
         throw new IllegalArgumentException("No constant with text " + text + " found");
+    }
+
+    public String getStatus() {
+        return status;
     }
 }
 

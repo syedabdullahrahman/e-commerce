@@ -1,11 +1,7 @@
 package syed.abdullah.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import syed.abdullah.demo.entity.Customer;
-import syed.abdullah.demo.entity.Product;
-import syed.abdullah.demo.entity.WishlistId;
 
 import java.io.Serializable;
 

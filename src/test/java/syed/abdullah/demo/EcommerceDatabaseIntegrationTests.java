@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import syed.abdullah.demo.entity.Product;
 import syed.abdullah.demo.entity.Wishlist;
 import syed.abdullah.demo.exception.DataNotFoundException;
 import syed.abdullah.demo.repository.WishlistRepository;
@@ -14,10 +15,11 @@ import syed.abdullah.demo.service.EcommerceService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -47,37 +49,71 @@ public class EcommerceDatabaseIntegrationTests {
     }
 
     @Test
-    public void testTotalSalesToday(){
+    public void testTotalSalesToday() {
         BigDecimal totalSalesToday = ecommerceService.getTotalSalesToday();
-        assertEquals(BigDecimal.valueOf(0),totalSalesToday);
+        assertEquals(BigDecimal.valueOf(0), totalSalesToday);
     }
 
     @Test
-    public void testTotalSalesOfDay_1(){
-        BigDecimal salesOfDay = ecommerceService.getTotalSalesOfDay(LocalDate.of(2004,11,17));
-        assertEquals(BigDecimal.valueOf(93153.18),salesOfDay);
+    public void testTotalSalesOfDay_1() {
+        BigDecimal salesOfDay = ecommerceService.getTotalSalesOfDay(LocalDate.of(2004, 11, 17));
+        assertEquals(BigDecimal.valueOf(93153.18), salesOfDay);
     }
 
     @Test
-    public void testTotalSalesOfDay_2(){
-        BigDecimal salesOfDay = ecommerceService.getTotalSalesOfDay(LocalDate.of(2004,11,24));
-        assertEquals(BigDecimal.valueOf(125129.55),salesOfDay);
+    public void testTotalSalesOfDay_2() {
+        BigDecimal salesOfDay = ecommerceService.getTotalSalesOfDay(LocalDate.of(2004, 11, 24));
+        assertEquals(BigDecimal.valueOf(125129.55), salesOfDay);
     }
 
     @Test
-    public void testMaxSaleDay_1(){
-        LocalDate maxSaleDay = ecommerceService.getMaxSaleDay(LocalDate.of(2004,1, 1), LocalDate.of(2004,12,31));
-        assertEquals(LocalDate.of(2004,11,24),maxSaleDay);
+    public void testMaxSaleDay_1() {
+        LocalDate startDate = LocalDate.of(2004, 1, 1);
+        LocalDate endDate = LocalDate.of(2004, 12, 31);
+        LocalDate maxSaleDay = ecommerceService.getMaxSaleDay(startDate, endDate);
+        LocalDate expected = LocalDate.of(2004, 11, 24);
+        assertEquals(expected, maxSaleDay);
     }
 
     @Test
-    public void testMaxSaleDay_2(){
-        LocalDate maxSaleDay = ecommerceService.getMaxSaleDay(LocalDate.of(2004,1, 1), LocalDate.now());
-        assertEquals(LocalDate.of(2004,11,24),maxSaleDay);
+    public void testMaxSaleDay_2() {
+        LocalDate startDate = LocalDate.of(2004, 1, 1);
+        LocalDate now = LocalDate.now();
+        LocalDate maxSaleDay = ecommerceService.getMaxSaleDay(startDate, now);
+        LocalDate expected = LocalDate.of(2004, 11, 24);
+        assertEquals(expected, maxSaleDay);
     }
 
     @Test
-    public void testMaxSaleDay_NoMaxSale(){
-        assertThrows(DataNotFoundException.class, () -> ecommerceService.getMaxSaleDay(LocalDate.now(), LocalDate.now()));
+    public void testMaxSaleDay_NoMaxSale() {
+        LocalDate now = LocalDate.now();
+        assertThrows(DataNotFoundException.class, () -> ecommerceService.getMaxSaleDay(now, now));
+    }
+
+    @Test
+    public void testTopNSellingItemsAllTime() {
+        Integer top5 = 5;
+        List<Product> products = ecommerceService.getTopNSellingItemsAllTime(top5);
+        assertEquals(top5, products.size());
+        List<String> expectedProductCodes = List.of("S18_3232", "S18_1342", "S700_4002", "S18_3856", "S50_1341");
+        assertThat(products.stream().map(Product::getProductCode).toList(), containsInAnyOrder(expectedProductCodes));
+    }
+
+    @Test
+    public void testTopNSellingItemsLastMonth() {
+        Integer top5 = 5;
+        List<Product> products = ecommerceService.getTopNSellingItemsLastMonth(top5);
+        assertEquals(0, products.size());
+    }
+
+    @Test
+    public void testTopNSellingItemsBetweenDates() {
+        Integer top5 = 5;
+        LocalDate startDate = LocalDate.of(2004, 1, 1);
+        LocalDate endDate = LocalDate.of(2004, 12, 31);
+        List<Product> products = ecommerceService.getTopNSellingItemsBetweenDates(top5, startDate, endDate);
+        assertEquals(5, products.size());
+        List<String> expectedProductCodes = List.of("S18_3232", "S18_1662", "S12_1108", "S700_2610", "S18_3856");
+        assertThat(products.stream().map(Product::getProductCode).toList(), containsInAnyOrder(expectedProductCodes));
     }
 }

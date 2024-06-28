@@ -67,6 +67,6 @@ class EcommerceControllerIntegrationTest {
         params.put("endDate", "31-Dec-2023");
         ResponseEntity<ErrorDetails> response = restTemplate.getForEntity("/api/sales/max-day?startDate={startDate}&endDate={endDate}", ErrorDetails.class, params);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("No date found between 01-Jan-2023 and 31-Dec-2023",response.getBody().getMessage());
+        assertEquals("No date found between 01-Jan-2023 and 31-Dec-2023", response.getBody().getMessage());
     }
 }

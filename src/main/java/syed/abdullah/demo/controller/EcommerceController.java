@@ -36,12 +36,12 @@ public class EcommerceController {
     }
 
     @GetMapping("/sales/top-items/all-time")
-    public List<Product> getTopSellingItemsAllTime() {
-        return ecommerceService.getTopSellingItemsAllTime();
+    public List<Product> getTopSellingItemsAllTime(@RequestParam(defaultValue = "5") Integer quantity) {
+        return ecommerceService.getTopNSellingItemsAllTime(quantity);
     }
 
     @GetMapping("/sales/top-items/last-month")
-    public List<Product> getTopSellingItemsLastMonth() {
-        return ecommerceService.getTopSellingItemsLastMonth();
+    public List<Product> getTopSellingItemsLastMonth(@RequestParam(defaultValue = "5") Integer quantity) {
+        return ecommerceService.getTopNSellingItemsLastMonth(quantity);
     }
 }

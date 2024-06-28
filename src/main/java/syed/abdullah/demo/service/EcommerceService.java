@@ -18,13 +18,14 @@ import java.util.Set;
 @Service
 @Transactional(readOnly = true)
 public class EcommerceService {
-    private WishlistRepository wishlistRepository;
-    private CustomerRepository customerRepository;
+    private final WishlistRepository wishlistRepository;
+    private final CustomerRepository customerRepository;
 
     public EcommerceService(WishlistRepository wishlistRepository, CustomerRepository customerRepository) {
         this.wishlistRepository = wishlistRepository;
         this.customerRepository = customerRepository;
     }
+
     public Set<Wishlist> getWishlistByCustomerId(Integer customerId) {
         Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
         if (optionalCustomer.isPresent()) {
@@ -47,11 +48,15 @@ public class EcommerceService {
         return LocalDate.now();
     }
 
-    public List<Product> getTopSellingItemsAllTime() {
+    public List<Product> getTopNSellingItemsAllTime(Integer number) {
         return List.of();
     }
 
-    public List<Product> getTopSellingItemsLastMonth() {
+    public List<Product> getTopNSellingItemsLastMonth(Integer number) {
+        return List.of();
+    }
+
+    public List<Product> getTopNSellingItemsBetweenDates(Integer number, LocalDate startDate, LocalDate endDate) {
         return List.of();
     }
 }

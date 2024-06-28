@@ -1,6 +1,5 @@
 package syed.abdullah.demo;
 
-import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

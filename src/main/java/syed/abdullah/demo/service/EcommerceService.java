@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import syed.abdullah.demo.entity.Customer;
+import syed.abdullah.demo.entity.Product;
 import syed.abdullah.demo.entity.Wishlist;
 import syed.abdullah.demo.repository.CustomerRepository;
 import syed.abdullah.demo.repository.WishlistRepository;
@@ -32,6 +33,22 @@ public class EcommerceService {
         } else {
             throw new EntityNotFoundException("Customer not found by ID: " + customerId);
         }
+    }
+
+    public BigDecimal getTotalSalesToday() {
+        return BigDecimal.TEN;
+    }
+
+    public LocalDate getMaxSaleDay(LocalDate startDate, LocalDate endDate) {
+        return LocalDate.now();
+    }
+
+    public List<Product> getTopSellingItemsAllTime() {
+        return List.of();
+    }
+
+    public List<Product> getTopSellingItemsLastMonth() {
+        return List.of();
     }
 }
 

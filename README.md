@@ -19,7 +19,7 @@
 - Liquibase
 - OpenAPI
 - Docker
-- Spring Date REST  etc.
+- Spring Data REST  etc.
 
 ## Features
 

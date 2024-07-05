@@ -7,12 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Date;
 
 @ControllerAdvice
 @Slf4j
-public class AppExceptionHandler {
+public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({EntityNotFoundException.class, DataNotFoundException.class})
     public ResponseEntity<?> globalEntityNotFoundExceptionHandling(Exception exception, WebRequest request) {
         log.error(exception.getMessage(), exception);

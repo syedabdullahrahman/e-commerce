@@ -9,9 +9,4 @@
     <changeSet author="abdullah" id="2024_06_27_create_schema.sql">
         <sqlFile path="2024_06_27_create_schema.sql" relativeToChangelogFile="true" splitStatements="true"/>
     </changeSet>
-
-    <changeSet author="abdullah" id="2024_06_27_insert_data.sql">
-        <sqlFile path="2024_06_27_insert_data.sql" relativeToChangelogFile="true" splitStatements="true"/>
-    </changeSet>
-
 </databaseChangeLog>

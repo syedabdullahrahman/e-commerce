@@ -1,16 +1,21 @@
-package syed.abdullah.demo;
+package syed.abdullah.demo.repository;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import syed.abdullah.demo.AbstractIntegrationTest;
 import syed.abdullah.demo.entity.Product;
 import syed.abdullah.demo.entity.Wishlist;
 import syed.abdullah.demo.exception.DataNotFoundException;
-import syed.abdullah.demo.repository.WishlistRepository;
 import syed.abdullah.demo.service.EcommerceService;
 
 import java.math.BigDecimal;
@@ -23,11 +28,12 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
-@ActiveProfiles("test")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-//todo: TestContainers
-public class EcommerceDatabaseIntegrationTests {
+//@Testcontainers
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@TestExecutionListeners(listeners = {DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class})
+//@ActiveProfiles("test")
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class EcommerceDatabaseIntegrationTests extends AbstractIntegrationTest {
 
     @Autowired
     private EcommerceService ecommerceService;

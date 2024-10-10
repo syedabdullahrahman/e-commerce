@@ -1,5 +1,8 @@
 # Simple E-commerce REST API
 
+[![Build and Test](https://github.com/syedabdullahrahman/e-commerce/actions/workflows/maven.yml/badge.svg)](https://github.com/syedabdullahrahman/e-commerce/actions/workflows/maven.yml)
+
+
 # Table of Contents
  - [Technologies Used](#technologies-used)
  - [Features](#features)

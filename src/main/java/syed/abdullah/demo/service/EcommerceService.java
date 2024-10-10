@@ -1,6 +1,9 @@
 package syed.abdullah.demo.service;
 
+import io.micrometer.observation.annotation.Observed;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import syed.abdullah.demo.entity.Customer;
@@ -22,18 +25,14 @@ import java.util.Set;
 
 @Service
 @Transactional(readOnly = true)
+@AllArgsConstructor
+@Slf4j
+@Observed(name = "e-commerce-service",contextualName = "EcommerceService")
 public class EcommerceService {
     private final WishlistRepository wishlistRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
-
-    public EcommerceService(WishlistRepository wishlistRepository, ProductRepository productRepository, OrderRepository orderRepository, CustomerRepository customerRepository) {
-        this.wishlistRepository = wishlistRepository;
-        this.productRepository = productRepository;
-        this.orderRepository = orderRepository;
-        this.customerRepository = customerRepository;
-    }
 
     public Set<Wishlist> getWishlistByCustomerId(Integer customerId) {
         Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
@@ -45,18 +44,27 @@ public class EcommerceService {
         }
     }
 
+    @Observed(name = "getTotalSalesToday",contextualName = "getTotalSalesToday")
     public BigDecimal getTotalSalesToday() {
-        return getTotalSalesOfDay(LocalDate.now());
+        BigDecimal totalSalesOfDay = getTotalSalesOfDay(LocalDate.now());
+        log.info("Total sales of today: " + totalSalesOfDay);
+        return totalSalesOfDay;
     }
 
+    @Observed(name = "getTotalSalesOfDay",contextualName = "getTotalSalesOfDay")
     public BigDecimal getTotalSalesOfDay(LocalDate date) {
-        return orderRepository.getTotalSalesOfDay(date).orElse(BigDecimal.ZERO);
+        BigDecimal bigDecimal = orderRepository.getTotalSalesOfDay(date).orElse(BigDecimal.ZERO);
+        log.info("Total sales of "+ date + ": " + bigDecimal);
+        return bigDecimal;
     }
 
+    @Observed(name = "getMaxSaleDay",contextualName = "getMaxSaleDay")
     public LocalDate getMaxSaleDay(LocalDate startDate, LocalDate endDate) {
         Optional<LocalDate> maxSaleDayBetweenDates = orderRepository.getMaxSaleDayBetweenDates(startDate, endDate);
         if(maxSaleDayBetweenDates.isPresent()){
-            return maxSaleDayBetweenDates.get();
+            LocalDate localDate = maxSaleDayBetweenDates.get();
+            log.info("Max sales day between "+ startDate + " -to- " + endDate +": "+ localDate);
+            return localDate;
         } else {
             throw new DataNotFoundException(String.format("No date found between %s and %s",startDate,endDate));
         }
@@ -67,6 +75,7 @@ public class EcommerceService {
      * @param number
      * @return
      */
+    @Observed(name = "getTopNSellingItemsAllTime",contextualName = "getTopNSellingItemsAllTime")
     public List<Product> getTopNSellingItemsAllTime(Integer number) {
         return getTopNSellingItemsBetweenDatesBasedOnTotalSaleAmount(number, LocalDate.MIN, LocalDate.now());
     }
@@ -77,6 +86,7 @@ public class EcommerceService {
      * @return
      */
 
+    @Observed(name = "getTopNSellingItemsLastMonth",contextualName = "getTopNSellingItemsLastMonth")
     public List<Product> getTopNSellingItemsLastMonth(Integer number) {
         LastMonth lastMonth = getLastMonth();
         return getTopNSellingItemsBetweenDatesBasedOnNumberOfSales(number, lastMonth.startDate, lastMonth.endDate);
@@ -92,11 +102,13 @@ public class EcommerceService {
         return new LastMonth(firstDayOfMonth, lastDayOfMonth);
     }
 
+    @Observed(name = "getTopNSellingItemsBetweenDatesBasedOnNumberOfSales",contextualName = "getTopNSellingItemsBetweenDatesBasedOnNumberOfSales")
     public List<Product> getTopNSellingItemsBetweenDatesBasedOnNumberOfSales(Integer number, LocalDate startDate, LocalDate endDate) {
         List<Product> basedOnNumberOfSales = productRepository.getTopNProductsBetweenDatesBasedOnNumberOfSales(number, startDate, endDate);
         return basedOnNumberOfSales;
     }
 
+    @Observed(name = "getTopNSellingItemsBetweenDatesBasedOnTotalSaleAmount",contextualName = "getTopNSellingItemsBetweenDatesBasedOnTotalSaleAmount")
     public List<Product> getTopNSellingItemsBetweenDatesBasedOnTotalSaleAmount(Integer number, LocalDate startDate, LocalDate endDate) {
         List<Product> basedOnTotalSaleAmount = productRepository.getTopNProductsBetweenDatesBasedOnTotalSaleAmount(number, startDate, endDate);
         return basedOnTotalSaleAmount;

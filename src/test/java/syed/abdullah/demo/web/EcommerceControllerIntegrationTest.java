@@ -63,7 +63,7 @@ class EcommerceControllerIntegrationTest extends AbstractControllerTest {
     public void testTotalSalesToday() {
         ResponseEntity<SaleAmount> response = restTemplate.getForEntity("/api/sales/today", SaleAmount.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        BigDecimal totalSalesToday = Objects.requireNonNull(response.getBody()).getAmount();
+        BigDecimal totalSalesToday = Objects.requireNonNull(response.getBody()).amount();
         assertEquals(BigDecimal.valueOf(0), totalSalesToday);
     }
 
@@ -74,7 +74,7 @@ class EcommerceControllerIntegrationTest extends AbstractControllerTest {
         params.put("endDate", "31-Dec-2004");
         ResponseEntity<MaxSaleDate> response = restTemplate.getForEntity("/api/sales/max-day?startDate={startDate}&endDate={endDate}", MaxSaleDate.class, params);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        LocalDate maxSaleDay = response.getBody().getDate();
+        LocalDate maxSaleDay = response.getBody().date();
         assertEquals(LocalDate.of(2004, 11, 24), maxSaleDay);
     }
 

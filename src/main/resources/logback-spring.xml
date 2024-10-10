@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <springProperty scope="context" name="appName" source="spring.application.name"/>
 
+    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+        <http>
+            <url>http://host.docker.internal:3100/loki/api/v1/push</url>
+        </http>
+        <format>
+            <label>
+                <pattern>application=${appName},host=${HOSTNAME},traceID=%X{traceId:-NONE},level=%level</pattern>
+            </label>
+            <message>
+                <pattern>${FILE_LOG_PATTERN}</pattern>
+            </message>
+            <sortByTime>true</sortByTime>
+        </format>
+    </appender>
     <property name="LOGS" value="./logs" />
 
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
@@ -30,6 +46,7 @@
 
     <!-- LOG everything at INFO level -->
     <root level="info">
+        <appender-ref ref="LOKI"/>
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </root>

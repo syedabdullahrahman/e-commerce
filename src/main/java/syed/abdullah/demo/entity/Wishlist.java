@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity(name = Wishlist.ENTITY_NAME)
-@Table(name = Wishlist.TABLE_NAME, schema = "ecommerce", indexes = {
+@Table(name = Wishlist.TABLE_NAME, indexes = {
         @Index(name = "productCode", columnList = "productCode")
 })
 public class Wishlist implements Serializable {

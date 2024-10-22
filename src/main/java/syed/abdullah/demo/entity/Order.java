@@ -3,6 +3,7 @@ package syed.abdullah.demo.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = Order.ENTITY_NAME)
-@Table(name = Order.TABLE_NAME, schema = "ecommerce", indexes = {
+@Table(name = Order.TABLE_NAME, indexes = {
         @Index(name = "customerNumber", columnList = "customerNumber")
 })
 public class Order implements Serializable {
@@ -50,8 +51,7 @@ public class Order implements Serializable {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @Lob
-    @Column(name = COLUMN_COMMENTS_NAME)
+    @Column(name = COLUMN_COMMENTS_NAME, columnDefinition = "text")
     private String comments;
 
     @NotNull

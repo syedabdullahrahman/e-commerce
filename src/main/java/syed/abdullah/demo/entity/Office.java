@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = Office.ENTITY_NAME)
-@Table(name = Office.TABLE_NAME, schema = "ecommerce")
+@Table(name = Office.TABLE_NAME)
 public class Office implements Serializable {
     public static final String ENTITY_NAME = "Office";
     public static final String TABLE_NAME = "offices";

@@ -17,7 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = Customer.ENTITY_NAME)
-@Table(name = Customer.TABLE_NAME, schema = "ecommerce", indexes = {
+@Table(name = Customer.TABLE_NAME, indexes = {
         @Index(name = "salesRepEmployeeNumber", columnList = "salesRepEmployeeNumber")
 })
 public class Customer implements Serializable {

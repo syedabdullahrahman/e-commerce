@@ -15,7 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = Productline.ENTITY_NAME)
-@Table(name = Productline.TABLE_NAME, schema = "ecommerce")
+@Table(name = Productline.TABLE_NAME)
 public class Productline implements Serializable {
     public static final String ENTITY_NAME = "Productline";
     public static final String TABLE_NAME = "productlines";
@@ -35,8 +35,7 @@ public class Productline implements Serializable {
     @Column(name = COLUMN_TEXTDESCRIPTION_NAME, length = 4000)
     private String textDescription;
 
-    @Lob
-    @Column(name = COLUMN_HTMLDESCRIPTION_NAME)
+    @Column(name = COLUMN_HTMLDESCRIPTION_NAME, columnDefinition = "text")
     private String htmlDescription;
 
     @Column(name = COLUMN_IMAGE_NAME)

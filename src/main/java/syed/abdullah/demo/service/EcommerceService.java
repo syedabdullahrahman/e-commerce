@@ -4,6 +4,7 @@ import io.micrometer.observation.annotation.Observed;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Limit;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import syed.abdullah.demo.entity.Customer;
@@ -77,7 +78,7 @@ public class EcommerceService {
      */
     @Observed(name = "getTopNSellingItemsAllTime",contextualName = "getTopNSellingItemsAllTime")
     public List<Product> getTopNSellingItemsAllTime(Integer number) {
-        return getTopNSellingItemsBetweenDatesBasedOnTotalSaleAmount(number, LocalDate.MIN, LocalDate.now());
+        return getTopNSellingItemsBetweenDatesBasedOnTotalSaleAmount(number, LocalDate.EPOCH, LocalDate.now());
     }
 
     /**
@@ -104,13 +105,13 @@ public class EcommerceService {
 
     @Observed(name = "getTopNSellingItemsBetweenDatesBasedOnNumberOfSales",contextualName = "getTopNSellingItemsBetweenDatesBasedOnNumberOfSales")
     public List<Product> getTopNSellingItemsBetweenDatesBasedOnNumberOfSales(Integer number, LocalDate startDate, LocalDate endDate) {
-        List<Product> basedOnNumberOfSales = productRepository.getTopNProductsBetweenDatesBasedOnNumberOfSales(number, startDate, endDate);
+        List<Product> basedOnNumberOfSales = productRepository.getTopNProductsBetweenDatesBasedOnNumberOfSales(startDate, endDate, Limit.of(number));
         return basedOnNumberOfSales;
     }
 
     @Observed(name = "getTopNSellingItemsBetweenDatesBasedOnTotalSaleAmount",contextualName = "getTopNSellingItemsBetweenDatesBasedOnTotalSaleAmount")
     public List<Product> getTopNSellingItemsBetweenDatesBasedOnTotalSaleAmount(Integer number, LocalDate startDate, LocalDate endDate) {
-        List<Product> basedOnTotalSaleAmount = productRepository.getTopNProductsBetweenDatesBasedOnTotalSaleAmount(number, startDate, endDate);
+        List<Product> basedOnTotalSaleAmount = productRepository.getTopNProductsBetweenDatesBasedOnTotalSaleAmount(startDate, endDate, Limit.of(number));
         return basedOnTotalSaleAmount;
     }
 }

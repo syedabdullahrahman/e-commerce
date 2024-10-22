@@ -1,6 +1,7 @@
 package syed.abdullah.demo.repository;
 
 import io.swagger.v3.oas.annotations.Hidden;
+import org.springframework.data.domain.Limit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -14,30 +15,31 @@ import java.util.List;
 @Hidden
 public interface ProductRepository extends JpaRepository<Product, String>, JpaSpecificationExecutor<Product> {
     @Query(value = """
-                    SELECT p.* from products p
-                    WHERE p.productCode in (select * from (
-                    select p.productCode
-                    from products p 
-                    inner join orderdetails o on p.productCode = o.productCode 
-                    inner join orders o2 on o.orderNumber = o2.orderNumber 
-                    WHERE DATE(o2.orderDate) BETWEEN :startDate AND :endDate and o2.status = 'SHIPPED'
-                    Group by p.productCode 
-                    ORDER BY Sum(o.quantityOrdered) desc
-                    LIMIT :topN) as tmp )
-            """, nativeQuery = true)
-    List<Product> getTopNProductsBetweenDatesBasedOnNumberOfSales(Integer topN, LocalDate startDate, LocalDate endDate);
+                    SELECT p FROM Product p 
+                     WHERE p.productCode IN (
+                         SELECT p.productCode FROM Order o
+                         JOIN o.orderdetails od
+                         JOIN od.productCode p
+                         WHERE o.orderDate BETWEEN :startDate AND :endDate 
+                         AND o.status = 'SHIPPED'
+                         GROUP BY p.productCode 
+                         ORDER BY SUM(od.quantityOrdered),p.productCode DESC
+                     )
+            """)
+    List<Product> getTopNProductsBetweenDatesBasedOnNumberOfSales(LocalDate startDate, LocalDate endDate, Limit topN);
 
     @Query(value = """
-            SELECT p.* from products p
-            WHERE p.productCode in (select * from (
-            select p.productCode
-            from products p 
-            inner join orderdetails o on p.productCode = o.productCode 
-            inner join orders o2 on o.orderNumber = o2.orderNumber 
-            WHERE DATE(o2.orderDate) BETWEEN :startDate AND :endDate and o2.status = 'SHIPPED'
-            Group by p.productCode 
-            ORDER BY Sum(o.quantityOrdered * o.priceEach) desc
-            LIMIT :topN) as tmp )
-            """, nativeQuery = true)
-    List<Product> getTopNProductsBetweenDatesBasedOnTotalSaleAmount(Integer topN, LocalDate startDate, LocalDate endDate);
+            SELECT p FROM Product p
+                                 WHERE p.productCode IN (
+                                     SELECT p.productCode FROM Order o
+                                     JOIN o.orderdetails od
+                                     JOIN od.productCode p
+                                     WHERE o.orderDate BETWEEN :startDate AND :endDate
+                                     AND o.status = 'SHIPPED'
+                                     GROUP BY p.productCode
+                                     ORDER BY SUM(od.quantityOrdered * od.priceEach),p.productCode DESC
+                                 )
+            """)
+    List<Product> getTopNProductsBetweenDatesBasedOnTotalSaleAmount(LocalDate startDate, LocalDate endDate,Limit topN);
+
 }

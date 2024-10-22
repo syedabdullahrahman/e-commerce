@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity(name = Product.ENTITY_NAME)
-@Table(name = Product.TABLE_NAME, schema = "ecommerce", indexes = {
+@Table(name = Product.TABLE_NAME, indexes = {
         @Index(name = "productLine", columnList = "productLine")
 })
 public class Product implements Serializable {
@@ -57,8 +57,7 @@ public class Product implements Serializable {
     private String productVendor;
 
     @NotNull
-    @Lob
-    @Column(name = COLUMN_PRODUCTDESCRIPTION_NAME, nullable = false)
+    @Column(name = COLUMN_PRODUCTDESCRIPTION_NAME, nullable = false, columnDefinition = "text")
     private String productDescription;
 
     @NotNull

@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity(name = Payment.ENTITY_NAME)
-@Table(name = Payment.TABLE_NAME, schema = "ecommerce")
+@Table(name = Payment.TABLE_NAME)
 public class Payment implements Serializable {
     public static final String ENTITY_NAME = "Payment";
     public static final String TABLE_NAME = "payments";

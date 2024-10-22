@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity(name = Orderdetail.ENTITY_NAME)
-@Table(name = Orderdetail.TABLE_NAME, schema = "ecommerce", indexes = {
+@Table(name = Orderdetail.TABLE_NAME, indexes = {
         @Index(name = "productCode", columnList = "productCode")
 })
 public class Orderdetail implements Serializable {

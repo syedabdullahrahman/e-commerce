@@ -15,7 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = Employee.ENTITY_NAME)
-@Table(name = Employee.TABLE_NAME, schema = "ecommerce", indexes = {
+@Table(name = Employee.TABLE_NAME, indexes = {
         @Index(name = "officeCode", columnList = "officeCode"),
         @Index(name = "reportsTo", columnList = "reportsTo")
 })
